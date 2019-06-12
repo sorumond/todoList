@@ -80,7 +80,13 @@ document.addEventListener('click', (event) => {
     } else if (isRemoveAllButton) {
         removeCompleted();
         showMenu();
-    } else if (!isEdditInput && isEditActive) {
+    }
+});
+
+document.addEventListener('mousedown', (event) => {
+    const isEdditInput = event.target.matches('.edit');
+
+    if (!isEdditInput && isEditActive) {
         isEditActive = false;
         let liItem = document.querySelector('.editing');
         let input = liItem.querySelector('.edit');
@@ -92,8 +98,6 @@ document.addEventListener('click', (event) => {
             showMenu();
         }
     }
-
-
 });
 
 document.addEventListener('dblclick', (event) => {
@@ -193,5 +197,3 @@ function removeCompleted() {
         }
     })
 }
-
-
