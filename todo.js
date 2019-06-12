@@ -13,7 +13,7 @@ document.querySelector('.new-todo').addEventListener('keyup', (event) => {
         }
     }
 });
-
+let isEditActive = false;
 document.addEventListener('click', (event) => {
     const isRemoveButton = event.target.matches('.destroy');
     const isCheckButton = event.target.matches('.toggle');
@@ -22,6 +22,7 @@ document.addEventListener('click', (event) => {
     const isCompletedButton = event.target.matches('.done');
     const isAllButton = event.target.matches('.all');
     const isRemoveAllButton = event.target.matches('.clear-completed');
+    const isEdditInput = event.target.matches('.edit');
 
     if (isRemoveButton) {
         event.target.closest('.todo-item').remove();
@@ -79,6 +80,17 @@ document.addEventListener('click', (event) => {
     } else if (isRemoveAllButton) {
         removeCompleted();
         showMenu();
+    } else if (!isEdditInput && isEditActive) {
+        isEditActive = false;
+        let liItem = document.querySelector('.editing');
+        let input = liItem.querySelector('.edit');
+        liItem.querySelector('label').innerHTML = input.value;
+        liItem.classList.remove('editing');
+        input.remove();
+        if (input.value === '') {
+            liItem.remove();
+            showMenu();
+        }
     }
 
 
@@ -88,6 +100,7 @@ document.addEventListener('dblclick', (event) => {
     const isTextField = event.target.matches('label');
 
     if (isTextField) {
+        isEditActive = true;
         let liItem = event.target.closest('.todo-item');
         liItem.classList.add('editing');
         liItem.innerHTML += `<input class='edit' autofocus>`;
@@ -95,22 +108,14 @@ document.addEventListener('dblclick', (event) => {
         input.focus();
         input.value = liItem.querySelector('label').innerHTML;
         changeToDo(liItem);
-        addBlur(liItem);
     }
 });
-
-function addBlur(li) {
-    let input = li.querySelector('.edit');
-    console.log('blur');
-    if (input) {
-
-    }
-}
 
 function changeToDo(li) {
     let input = li.querySelector('.edit');
     input.addEventListener('keyup', (event) => {
         if (event.keyCode === 13) {
+            isEditActive = false;
             console.log('Гуси');
             li.querySelector('label').innerHTML = input.value;
             li.classList.remove('editing');
@@ -121,6 +126,7 @@ function changeToDo(li) {
             }
             return true;
         } else if (event.keyCode === 27) {
+            isEditActive = false;
             console.log('Dva Gusya');
             li.classList.remove('editing');
             input.remove();
@@ -128,14 +134,6 @@ function changeToDo(li) {
         }
     });
     input.addEventListener('blur', (event) => {
-        console.log('BlurГуси');
-        li.querySelector('label').innerHTML = input.value;
-        li.classList.remove('editing');
-        input.remove();
-        if (input.value === '') {
-            li.remove();
-            showMenu();
-        }
     })
 }
 
