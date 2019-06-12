@@ -22,7 +22,6 @@ document.addEventListener('click', (event) => {
     const isCompletedButton = event.target.matches('.done');
     const isAllButton = event.target.matches('.all');
     const isRemoveAllButton = event.target.matches('.clear-completed');
-    const isEdditInput = event.target.matches('.edit');
 
     if (isRemoveButton) {
         event.target.closest('.todo-item').remove();
